@@ -1,27 +1,44 @@
 #! /bin/bash
 
 
-mkdir ./hot-Folder
+#! /bin/bash
 
-for myfile in  * ;
+rm -r /hot-folder
+
+mkdir ./hot-folder
+
+for i in $(find . -type d)   ;
 do
-	if [ -f "$myfile" ]; then
 
-		check=$(grep -ni "spo" "$myfile")
-		if [ -z "$check" ]; then
-			echo "EMPTY"
-		else
-			echo "FOUND !"
-			cp "$myfile" hot-Folder
-			echo " " >> hot-Folder/"$myfile"
-			echo "*******" >> hot-Folder/"$myfile"
-			echo "$check" >> hot-Folder/"$myfile"
+if [ "$i" != "./hot-folder" ]; then 
+
+	echo "********** FOLDER  $i ***************** "
+
+	for myfile in $i/* ;
+	do
+
+		if [ -f "$myfile" ]; then
+
+			echo "the file inside is:  $myfile"
+			check=$(grep -ni "spo" "$myfile")
 			
-		fi
-	else
-		echo "$myfile  is not a file"
-		echo " "
-	fi
-		echo "----------------------------"
-done
+			if [ -z "$check" ]; then
+				echo "EMPTY"
+			else	
+				echo "HOT FILE!! FOUND!"
 
+				name_f=$(basename "$myfile")
+
+				cp "$myfile" ./hot-folder/"$name_f"
+				echo "  " >> hot-folder/"$name_f"
+				echo "*******" >> hot-folder/"$name_f"
+				echo "$check" >> hot-folder/"$name_f"
+			fi
+		fi
+
+	done
+	echo "---------------"
+	echo "  "
+fi
+
+done
